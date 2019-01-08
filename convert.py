@@ -16,8 +16,12 @@ def convert(name):
     fi_f.write('- name: %s\n' % name)
     fi_f.write('  rules:\n')
     for line in open(os.path.join(root_path, fi)):
-        if line.startswith('DOMAIN') or line.startswith('IP-CIDR'):
+        if line.startswith('DOMAIN-SUFFIX') or line.startswith('IP-CIDR'):
             fi_f.write('  - '+line)
+        elif line.startswith('DOMAIN-KEYWORD'):
+            fi_f.write('  - '+line.replace('DOMAIN-KEYWORD', 'DOMAIN-MATCH'))
+        else:
+            fi_f.write('#'+line)
     fi_f.write('  - GEOIP,CN,DIRECT\n')
 
 for fi in os.listdir(root_path):
